@@ -1,0 +1,17 @@
+#Importation des utilisateurs depuis le fichier CSV spécifié 
+
+$users = import-csv -path “C:\UsersAD.csv” -delimiter “;” 
+ 
+# Création de l’utilisateur 
+foreach($user in $users) 
+{ 
+AccountPassword =(Read-Host -AsSecureString "Mot de passe ?")
+$nom= $user.firstname 
+$prenom= $user.lastname 
+$SamAccountName= $user.SamAccountName 
+-Title $UtilisateurDescription `
+-Path "OU=Direction,OU=Personnel,DC=sprincipe,DC=sn" `
+$ou= $user.ou 
+ #Ajout des données dans la base Active Directory 
+New-ADuser -name $nom -givenname $prenom -SamAccountName $SamAccountName -Path $ou 
+}
